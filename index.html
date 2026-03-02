@@ -270,7 +270,7 @@ id:3,
 name:"Red & White Jacket",
 price:699,
 category:"Jackets",
-image:"https://i.ibb.co/RpCDGzCF/ff406012-394f-4e41-a98a-89bbb288d0b5.jpg",
+image:"https://i.ibb.co/93H9r3VW/4ea09c16-34fd-4135-aa76-7e9b7f97accb.jpg",
 description:"Premium quality, branded Jacket"
 }
 ];
@@ -284,28 +284,41 @@ products.filter(p=>filter==="All"||p.category===filter)
 .forEach(p=>{
 list.innerHTML+=`
 <div class="card">
-<img src="${p.image}" alt="Straight fit Black Jeans - Ariesatticthrift" loading="lazy">
+<img src="${p.image}" alt="${p.name}" loading="lazy">
 <div class="card-body">
 <h3>${p.name}</h3>
 <p>${p.description}</p>
 <div class="price">₹${p.price}</div>
+
+<select id="size-${p.id}" style="width:100%;margin-bottom:8px;padding:6px;">
+<option value="">Select Size</option>
+<option value="S">S</option>
+<option value="M">M</option>
+<option value="L">L</option>
+<option value="XL">XL</option>
+</select>
+
 <button onclick="addToCart(${p.id})">Add to Cart</button>
 </div>
 </div>`;
 });
 }
 
-function filterProducts(category,e){
-document.querySelectorAll(".filters button").forEach(btn=>btn.classList.remove("active"));
-e.target.classList.add("active");
-renderProducts(category);
+function addToCart(id){
+const size=document.getElementById(`size-${id}`).value;
+if(!size){
+alert("Please select size");
+return;
 }
 
-function addToCart(id){
-const item=products.find(p=>p.id===id);
-const exist=cart.find(p=>p.id===id);
-if(exist){exist.qty++;}
-else{cart.push({...item,qty:1});}
+const product=products.find(p=>p.id===id);
+const existing=cart.find(p=>p.id===id && p.size===size);
+
+if(existing){
+existing.qty++;
+}else{
+cart.push({...product,qty:1,size:size});
+}
 updateCart();
 }
 
@@ -319,32 +332,36 @@ function renderCart(){
 const box=document.getElementById("cartItems");
 box.innerHTML="";
 let total=0;
+
 cart.forEach(item=>{
 let subtotal=item.price*item.qty;
 total+=subtotal;
+
 box.innerHTML+=`
 <div class="cart-item">
 <h4>${item.name}</h4>
+Size: ${item.size}<br>
 ₹${item.price} × ${item.qty} = ₹${subtotal}
 <div class="cart-controls">
-<button onclick="changeQty(${item.id},-1)">-</button>
-<button onclick="changeQty(${item.id},1)">+</button>
-<button onclick="removeItem(${item.id})">Remove</button>
+<button onclick="changeQty(${item.id},'${item.size}',-1)">-</button>
+<button onclick="changeQty(${item.id},'${item.size}',1)">+</button>
+<button onclick="removeItem(${item.id},'${item.size}')">Remove</button>
 </div>
 </div>`;
 });
+
 document.getElementById("grandTotal").innerText="Grand Total: ₹"+total;
 }
 
-function changeQty(id,val){
-let item=cart.find(p=>p.id===id);
+function changeQty(id,size,val){
+let item=cart.find(p=>p.id===id && p.size===size);
 item.qty+=val;
-if(item.qty<=0) removeItem(id);
+if(item.qty<=0) removeItem(id,size);
 updateCart();
 }
 
-function removeItem(id){
-cart=cart.filter(p=>p.id!==id);
+function removeItem(id,size){
+cart=cart.filter(p=>!(p.id===id && p.size===size));
 updateCart();
 }
 
@@ -360,11 +377,13 @@ generateSummary();
 function generateSummary(){
 let text="ARIESATTICTHRIFT - NEW ORDER\n\n";
 let total=0;
+
 cart.forEach(i=>{
 let sub=i.price*i.qty;
 total+=sub;
-text+=`${i.name}\nQuantity: ${i.qty}\nSubtotal: ₹${sub}\n\n`;
+text+=`${i.name}\nSize: ${i.size}\nQuantity: ${i.qty}\nSubtotal: ₹${sub}\n\n`;
 });
+
 text+="Grand Total: ₹"+total;
 document.getElementById("orderSummary").value=text;
 }
