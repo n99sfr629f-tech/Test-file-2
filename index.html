@@ -201,10 +201,10 @@ header p{font-size:13px;color:#666;}
 </header>
 
 <div class="filters">
-<button class="active" onclick="filterProducts('All',event)">All</button>
-<button onclick="filterProducts('Jeans',event)">Jeans</button>
-<button onclick="filterProducts('Tshirts',event)">Tshirts</button>
-<button onclick="filterProducts('Jackets',event)">Jackets</button>
+  <button onclick="renderProducts('All')">All</button>
+  <button onclick="renderProducts('Jeans')">Jeans</button>
+  <button onclick="renderProducts('Tshirts')">Tshirts</button>
+  <button onclick="renderProducts('Jackets')">Jackets</button>
 </div>
 
 <div class="products" id="productList"></div>
@@ -281,11 +281,12 @@ function renderProducts(filter = "All") {
   const list = document.getElementById("productList");
   list.innerHTML = "";
 
-  const filteredProducts = products.filter(function(p) {
-    return filter === "All" || p.category === filter;
-  });
+  products.forEach(function(p) {
 
-  filteredProducts.forEach(function(p) {
+    if (filter !== "All" && p.category !== filter) {
+      return;
+    }
+
     list.innerHTML += `
       <div class="card">
         <img 
