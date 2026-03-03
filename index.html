@@ -280,8 +280,9 @@ let cart=JSON.parse(localStorage.getItem("cart"))||[];
 function renderProducts(filter="All"){
 const list=document.getElementById("productList");
 list.innerHTML="";
-products.filter(p=>filter==="All"||p.category===filter)
-.forEach(p=>{
+products
+.filter(p => filter === "All" || p.category === filter)
+.forEach(p => {
 list.innerHTML+=`
 <div class="card">
 <img 
