@@ -15,7 +15,11 @@
   --bg:#f9f9f9;
   --white:#ffffff;
 }
-
+.filters button.active{
+  background:#111;
+  color:white;
+  border-color:#111;
+}
 *{
   margin:0;
   padding:0;
@@ -93,7 +97,7 @@ header p{
 
 .card img{
   width:100%;
-  height:240px;
+  height:300px;   /* was 240 */
   object-fit:cover;
 }
 
@@ -230,7 +234,7 @@ select{
 
 .whatsapp{
   position:fixed;
-  bottom:20px;
+  bottom:90px;   /* was 20px */
   left:20px;
   background:#25D366;
   color:white;
@@ -250,10 +254,10 @@ select{
 </header>
 
 <div class="filters">
-  <button onclick="renderProducts('All')">All</button>
-  <button onclick="renderProducts('Jeans')">Jeans</button>
-  <button onclick="renderProducts('Tshirts')">Tshirts</button>
-  <button onclick="renderProducts('Jackets')">Jackets</button>
+  <button onclick="setFilter(this,'All')" class="active">All</button>
+  <button onclick="setFilter(this,'Jeans')">Jeans</button>
+  <button onclick="setFilter(this,'Tshirts')">Tshirts</button>
+  <button onclick="setFilter(this,'Jackets')">Jackets</button>
 </div>
 
 <div class="products" id="productList"></div>
@@ -369,7 +373,13 @@ function openImage(src){
   document.getElementById("imageModal").style.display = "flex";
   document.getElementById("popupImage").src = src;
 }
+function setFilter(button, category){
+  document.querySelectorAll(".filters button")
+    .forEach(btn => btn.classList.remove("active"));
 
+  button.classList.add("active");
+  renderProducts(category);
+}
 function closeImage(){
   document.getElementById("imageModal").style.display = "none";
 }
