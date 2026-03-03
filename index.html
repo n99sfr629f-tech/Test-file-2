@@ -284,7 +284,13 @@ products.filter(p=>filter==="All"||p.category===filter)
 .forEach(p=>{
 list.innerHTML+=`
 <div class="card">
-<img src="${p.image}" alt="${p.name}" loading="lazy">
+<img 
+  src="${p.image}" 
+  alt="${p.name}" 
+  loading="lazy"
+  style="cursor:pointer;"
+  onclick="openImage('${p.image}')"
+>
 <div class="card-body">
 <h3>${p.name}</h3>
 <p>${p.description}</p>
@@ -303,7 +309,14 @@ list.innerHTML+=`
 </div>`;
 });
 }
+function openImage(src){
+  document.getElementById("imageModal").style.display = "flex";
+  document.getElementById("popupImage").src = src;
+}
 
+function closeImage(){
+  document.getElementById("imageModal").style.display = "none";
+}
 function addToCart(id){
 const size=document.getElementById(`size-${id}`).value;
 if(!size){
@@ -399,6 +412,34 @@ document.getElementById("confirmation").style.display="block";
 renderProducts();
 updateCart();
 </script>
+<!-- Image Popup -->
+<div id="imageModal" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+z-index:9999;
+justify-content:center;
+align-items:center;
+">
 
+  <span onclick="closeImage()" style="
+  position:absolute;
+  top:20px;
+  right:25px;
+  font-size:30px;
+  color:white;
+  cursor:pointer;
+  ">✖</span>
+
+  <img id="popupImage" style="
+  max-width:90%;
+  max-height:90%;
+  border-radius:10px;
+  ">
+</div>
 </body>
 </html>
