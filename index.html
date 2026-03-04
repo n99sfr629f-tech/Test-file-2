@@ -28,16 +28,23 @@
 }
 
 body{
+  background:#121212;
+  color:#f0ece0;
   font-family:'Inter',sans-serif;
-  background:#F6F6F6;
-  color:#222;
 }
-
+header{
+  background:#111;
+  padding:20px 15px;
+  text-align:center;
+  border-bottom:2px solid #C8A951;
+}
 header h1{
   font-family:'Playfair Display',serif;
-  font-size:32px;
-  letter-spacing:2px;
-}
+  font-size:26px;     /* smaller than before */
+  letter-spacing:3px;
+  font-weight:600;
+  color:#111;
+  text-transform:uppercase;
 }
 
 header p{
@@ -72,22 +79,21 @@ header p{
 
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:25px;
-  padding:25px;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  padding:20px;
 }
 
 .card{
-  background:white;
+  background:#1e1e1e;
   border-radius:18px;
   overflow:hidden;
-  transition:0.3s ease;
-  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 .card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 18px 45px rgba(0,0,0,0.1);
 }
 
 .card img{
@@ -112,9 +118,9 @@ header p{
 }
 
 .price{
-  font-weight:700;
-  font-size:16px;
-  margin-bottom:12px;
+  color:#C8A951;
+  font-weight:600;
+  font-size:18px;
 }
 
 select{
@@ -235,6 +241,26 @@ select{
   text-decoration:none;
   font-size:14px;
   box-shadow:0 6px 15px rgba(0,0,0,0.2);
+} 
+.card{
+  background:white;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  transform:translateY(20px);
+  opacity:0;
+  animation:fadeUp 0.6s ease forwards;
+}
+
+.card:nth-child(2){animation-delay:0.1s;}
+.card:nth-child(3){animation-delay:0.2s;}
+.card:nth-child(4){animation-delay:0.3s;}
+
+@keyframes fadeUp{
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
 }
 </style>
 </head>
